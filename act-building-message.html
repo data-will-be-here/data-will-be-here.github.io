@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Swap Message Construction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">How to Manually Construct a Swap Message through <a href="https://act.ghwnd.cc/" target="_blank" class="text-blue-400">act</a></h1>
+    <p class="mb-4">This guide explains how to manually assemble a message for a swap transaction on dedust.io through <a href="https://act.ghwnd.cc/" target="_blank" class="text-blue-400">act</a>.</p>
+
+    <h2 class="text-2xl font-semibold mt-6">Swap Message Structure</h2>
+    <p class="mb-2">The swap message consists of:</p>
+    <ul class="list-disc pl-6 mb-4">
+        <li><strong>query_id</strong> (uint64) - query ID</li>
+        <li><strong>amount</strong> (Coins) - TON amount for the swap</li>
+        <li><strong>_:SwapStep</strong> - set of parameters relevant for the specific step</li>
+        <li><strong>swap_params</strong> (^SwapParams) - set of parameters relevant for the entire swap</li>
+    </ul>
+    <h2 class="text-2xl font-semibold mt-6">SwapParams Structure</h2>
+    <p class="mb-2">The <code>SwapParams</code> structure consists of the following fields:</p>
+    <ul class="list-disc pl-6 mb-4">
+        <li><strong>deadline</strong> (Timestamp) - specifies a deadline for the swap. If the swap reaches the Pool after this time, it will be rejected. Default: 0 (disabled)</li>
+        <li><strong>recipient_addr</strong> (MsgAddress) - specifies an address where funds will be sent after the swap. Default: sender's address.</li>
+        <li><strong>referral_addr</strong> (MsgAddress) - referral address. Required for the Referral Program.</li>
+        <li><strong>fulfill_payload</strong> (Maybe ^Cell) - custom payload that will be attached to the fund transfer upon a successful swap.</li>
+        <li><strong>reject_payload</strong> (Maybe ^Cell) - custom payload that will be attached to the fund transfer upon a rejected swap.</li>
+    </ul>
+
+    <h2 class="text-2xl font-semibold mt-6 mb-2">1. Building the SwapParams</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            <h3 class="text-xl font-semibold mb-2">Manual Code</h3>
+            <pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm">
+beginCell()
+  .storeUint(now() + 5 * 60, 32) // Deadline
+  .storeAddress(myAddress()) // Recipient address
+  .storeUint(0, 2) // Referral (if any)
+  .storeBit(0) // Fulfill payload (optional)
+  .storeBit(0) // Reject payload (optional)
+.endCell();
+                </pre>
+        </div>
+        <div>
+            <h3 class="text-xl font-semibold mb-2">Dedust Reference</h3>
+            <p class="bg-gray-800 p-4 rounded-lg">Refer to <a target="_blank"
+                                                              href="https://docs.dedust.io/reference/tlb-schemes#message-swap"
+                                                              class="text-blue-400">Dedust Docs</a> for additional swap
+                message structures.</p>
+            <p class="mt-2">SwapParams <a target="_blank" class="text-blue-400" href="https://docs.dedust.io/reference/tlb-schemes#swapparams">[docs]</a></p>
+            <p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base relative" style="white-space:pre-wrap"><span class="text-[#DC7F9B]">swap_params</span><span class="text-[#e0a685]">#_</span> <span>deadline</span><span>:</span><span class="text-[#DC7F9B]">Timestamp</span> <span>recipient_addr</span><span>:</span><span class="text-[#DC7F9B]">MsgAddressInt</span> <span>referral_addr</span><span>:</span><span class="text-[#DC7F9B]">MsgAddress</span> <span>fulfill_payload</span><span>:</span><span>(</span><span class="text-[#DC7F9B]">Maybe</span> <span>^</span><span class="text-[#DC7F9B]">Cell</span><span>)</span> <span>reject_payload</span><span>:</span><span>(</span><span class="text-[#DC7F9B]">Maybe</span> <span>^</span><span class="text-[#DC7F9B]">Cell</span><span>)</span> <span>=</span> <span class="text-[#DC7F9B]">SwapParams</span><span>;</span></p>
+        </div>
+        <div>
+            <h3 class="text-xl font-semibold mb-2">Act Interface</h3>
+            <img src="images/msg_swap_params.png" alt="Act Interface" class="w-full rounded-lg select-none pointer-events-none">
+        </div>
+    </div>
+    <h2 class="text-2xl font-semibold mt-6 mb-2">2. Building the Swap Message</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            <h3 class="text-xl font-semibold mb-2">Manual Code</h3>
+            <pre class="bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm lg:whitespace-pre-wrap">
+beginCell()
+  .storeUint(0xea06185d, 32) // Swap op-code
+  .storeUint(0, 64) // Query ID
+  .storeCoins(amount - toNano(0.2)) // Amount minus fee
+  .storeAddress("EQDQ...XJWC") // dedust_pool address
+  .storeUint(0, 1) // Swap kind
+  .storeCoins(0) // Minimum output of the swap
+  .storeBit(0) // Reference to the next step.
+  .storeRef(swap_params) // Reference to SwapParams
+.endCell();
+                </pre>
+        </div>
+        <div>
+            <h3 class="text-xl font-semibold mb-2">Dedust Reference</h3>
+            <p class="bg-gray-800 p-4 rounded-lg">Refer to <a target="_blank"
+                                                              href="https://docs.dedust.io/reference/tlb-schemes#message-swap"
+                                                              class="text-blue-400">Dedust Docs</a> for additional swap
+                message structures.</p>
+            <p class="mt-2">Message "swap" <a target="_blank" class="text-blue-400" href="https://docs.dedust.io/reference/tlb-schemes#message-swap">[docs]</a></p>
+            <p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base relative" style="white-space:pre-wrap"><span class="text-[#DC7F9B]">swap</span><span class="text-[#e0a685]">#ea06185d</span> <span
+    class="text-[#DC7F9B]">query_id</span><span>:</span><span class="text-[#DC7F9B]">uint64</span> <span
+    class="text-[#DC7F9B]">amount</span><span>:</span><span class="text-[#DC7F9B]">Coins</span> <span
+    class="text-[#DC7F9B]">_</span><span>:</span><span class="text-[#DC7F9B]">SwapStep<a target="_blank"
+                                                                            class="text-blue-400"
+                                                                            href="https://docs.dedust.io/reference/tlb-schemes#swapstep">¹</a></span> <span
+    class="text-[#DC7F9B]">swap_params</span><span>:</span><span class="text-[#DC7F9B]">^SwapParams<a target="_blank"
+                                                                                         class="text-blue-400"
+                                                                                         href="https://docs.dedust.io/reference/tlb-schemes#swapparams">²</a> </span>= <span class="text-[#DC7F9B]">InMsgBody</span><span>;</span></p>
+
+            <p class="mt-2">SwapStep <a class="text-blue-400" target="_blank" href="https://docs.dedust.io/reference/tlb-schemes#swapstep">[docs]</a></p>
+<p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base relative" style="white-space:pre-wrap"><span class="text-[#DC7F9B]">step</span><span class="text-[#e0a685]">#_</span> <span>pool_addr</span><span>:</span><span class="text-[#DC7F9B]">MsgAddressInt</span> <span>params</span><span>:</span><span class="text-[#DC7F9B]">SwapStepParams</span> <span>=</span> <span class="text-[#DC7F9B]">SwapStep</span><span>;</span></p>
+<p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base"><span class="text-[#DC7F9B]">step_params</span><span class="text-[#e0a685]">#_</span> <span>kind</span><span>:</span><span class="text-[#DC7F9B]">SwapKind</span> <span>limit</span><span>:</span><span class="text-[#DC7F9B]">Coins</span> <span>next</span><span>:</span><span>(</span><span class="text-[#DC7F9B]">Maybe</span> <span>^</span><span class="text-[#DC7F9B]">SwapStep</span><span>)</span> <span>=</span> <span class="text-[#DC7F9B]">SwapStepParams</span><span>;</span>
+            </p>
+        </div>
+        <div>
+            <h3 class="text-xl font-semibold mb-2">Act Interface</h3>
+            <img src="images/msg_swap.png" alt="Act Interface" class="w-full rounded-lg select-none pointer-events-none">
+        </div>
+    </div>
+
+
+    <h2 class="text-2xl font-semibold mt-6">3. Sending the Message</h2>
+    <p>Once the message is constructed, send it to the contract using your preferred wallet / script / <a href="https://act.ghwnd.cc/" target="_blank" class="text-blue-400">act</a> interface.</p>
+
+    <footer class="mt-12 text-center text-gray-400">
+        <p>try <a href="https://act.ghwnd.cc/" target="_blank" class="text-blue-400">act.ghwnd.cc</a></p>
+    </footer>
+</div>
+</body>
+</html>
