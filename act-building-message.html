@@ -46,10 +46,10 @@ beginCell()
         <div>
             <h3 class="text-xl font-semibold mb-2">Dedust Reference</h3>
             <p class="bg-gray-800 p-4 rounded-lg">Refer to <a target="_blank"
-                                                              href="https://docs.dedust.io/reference/tlb-schemes#message-swap"
+                                                              href="https://hub.dedust.io/contracts/v2/reference/core/common/#message-swap"
                                                               class="text-blue-400">Dedust Docs</a> for additional swap
                 message structures.</p>
-            <p class="mt-2">SwapParams <a target="_blank" class="text-blue-400" href="https://docs.dedust.io/reference/tlb-schemes#swapparams">[docs]</a></p>
+            <p class="mt-2">SwapParams <a target="_blank" class="text-blue-400" href="https://hub.dedust.io/contracts/v2/reference/core/common/#type-swapparams">[docs]</a></p>
             <p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base relative" style="white-space:pre-wrap"><span class="text-[#DC7F9B]">swap_params</span><span class="text-[#e0a685]">#_</span> <span>deadline</span><span>:</span><span class="text-[#DC7F9B]">Timestamp</span> <span>recipient_addr</span><span>:</span><span class="text-[#DC7F9B]">MsgAddressInt</span> <span>referral_addr</span><span>:</span><span class="text-[#DC7F9B]">MsgAddress</span> <span>fulfill_payload</span><span>:</span><span>(</span><span class="text-[#DC7F9B]">Maybe</span> <span>^</span><span class="text-[#DC7F9B]">Cell</span><span>)</span> <span>reject_payload</span><span>:</span><span>(</span><span class="text-[#DC7F9B]">Maybe</span> <span>^</span><span class="text-[#DC7F9B]">Cell</span><span>)</span> <span>=</span> <span class="text-[#DC7F9B]">SwapParams</span><span>;</span></p>
         </div>
         <div>
@@ -77,21 +77,21 @@ beginCell()
         <div>
             <h3 class="text-xl font-semibold mb-2">Dedust Reference</h3>
             <p class="bg-gray-800 p-4 rounded-lg">Refer to <a target="_blank"
-                                                              href="https://docs.dedust.io/reference/tlb-schemes#message-swap"
+                                                              href="https://hub.dedust.io/contracts/v2/reference/core/common/#message-swap"
                                                               class="text-blue-400">Dedust Docs</a> for additional swap
                 message structures.</p>
-            <p class="mt-2">Message "swap" <a target="_blank" class="text-blue-400" href="https://docs.dedust.io/reference/tlb-schemes#message-swap">[docs]</a></p>
+            <p class="mt-2">Message "swap" <a target="_blank" class="text-blue-400" href="https://hub.dedust.io/contracts/v2/reference/core/common/#message-swap">[docs]</a></p>
             <p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base relative" style="white-space:pre-wrap"><span class="text-[#DC7F9B]">swap</span><span class="text-[#e0a685]">#ea06185d</span> <span
     class="text-[#DC7F9B]">query_id</span><span>:</span><span class="text-[#DC7F9B]">uint64</span> <span
     class="text-[#DC7F9B]">amount</span><span>:</span><span class="text-[#DC7F9B]">Coins</span> <span
     class="text-[#DC7F9B]">_</span><span>:</span><span class="text-[#DC7F9B]">SwapStep<a target="_blank"
                                                                             class="text-blue-400"
-                                                                            href="https://docs.dedust.io/reference/tlb-schemes#swapstep">¹</a></span> <span
+                                                                            href="https://hub.dedust.io/contracts/v2/reference/core/common/#type-swapstep">¹</a></span> <span
     class="text-[#DC7F9B]">swap_params</span><span>:</span><span class="text-[#DC7F9B]">^SwapParams<a target="_blank"
                                                                                          class="text-blue-400"
-                                                                                         href="https://docs.dedust.io/reference/tlb-schemes#swapparams">²</a> </span>= <span class="text-[#DC7F9B]">InMsgBody</span><span>;</span></p>
+                                                                                         href="https://hub.dedust.io/contracts/v2/reference/core/common/#type-swapparams">²</a> </span>= <span class="text-[#DC7F9B]">InMsgBody</span><span>;</span></p>
 
-            <p class="mt-2">SwapStep <a class="text-blue-400" target="_blank" href="https://docs.dedust.io/reference/tlb-schemes#swapstep">[docs]</a></p>
+            <p class="mt-2">SwapStep <a class="text-blue-400" target="_blank" href="https://hub.dedust.io/contracts/v2/reference/core/common/#type-swapstep">[docs]</a></p>
 <p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base relative" style="white-space:pre-wrap"><span class="text-[#DC7F9B]">step</span><span class="text-[#e0a685]">#_</span> <span>pool_addr</span><span>:</span><span class="text-[#DC7F9B]">MsgAddressInt</span> <span>params</span><span>:</span><span class="text-[#DC7F9B]">SwapStepParams</span> <span>=</span> <span class="text-[#DC7F9B]">SwapStep</span><span>;</span></p>
 <p class="bg-gray-800 p-4 rounded-lg text-sm  mt-2 font-mono text-base"><span class="text-[#DC7F9B]">step_params</span><span class="text-[#e0a685]">#_</span> <span>kind</span><span>:</span><span class="text-[#DC7F9B]">SwapKind</span> <span>limit</span><span>:</span><span class="text-[#DC7F9B]">Coins</span> <span>next</span><span>:</span><span>(</span><span class="text-[#DC7F9B]">Maybe</span> <span>^</span><span class="text-[#DC7F9B]">SwapStep</span><span>)</span> <span>=</span> <span class="text-[#DC7F9B]">SwapStepParams</span><span>;</span>
             </p>
@@ -105,6 +105,14 @@ beginCell()
 
     <h2 class="text-2xl font-semibold mt-6">3. Sending the Message</h2>
     <p>Once the message is constructed, send it to the contract using your preferred wallet / script / <a href="https://act.ghwnd.cc/" target="_blank" class="text-blue-400">act</a> interface.</p>
+
+    <h2 class="text-2xl font-semibold mt-6">🎥 Also, enjoy the video:</h2>
+    <div class="flex justify-center lg:justify-start mt-4">
+        <video class="w-full lg:w-3/4 rounded-lg shadow-lg" autoplay loop muted controls playsinline>
+            <source src="assets/guide.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
     <footer class="mt-12 text-center text-gray-400">
         <p>try <a href="https://act.ghwnd.cc/" target="_blank" class="text-blue-400">act.ghwnd.cc</a></p>
